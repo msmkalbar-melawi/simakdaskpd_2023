@@ -182,7 +182,7 @@ class LraController extends CI_Controller
         // $hasill=0;
         // $dataaaaaaa=0;
         foreach ($dataisian->result_array() as $resulte) {
-            $persen = $resulte['realisasi'] / $resulte['anggaran'] * 100;
+            $persen = $resulte['realisasi'] / 100 * $resulte['anggaran'];
             $hasill = ($resulte['anggaran'] < $resulte['realisasi']) ?  '(' . number_format($resulte['realisasi'], 2, ",", ".") . ')' : number_format($resulte['realisasi'], 2, ",", ".");
             // " . number_format($resulte['anggaran'] - $resulte['realisasi'], 2, ",", ".") . "
             $hasill1 = ($resulte['anggaran'] < $resulte['realisasi']) ?  '(' . number_format($resulte['anggaran'] - $resulte['realisasi'], 2, ",", ".") . ')' : number_format($resulte['anggaran'] - $resulte['realisasi'], 2, ",", ".");
