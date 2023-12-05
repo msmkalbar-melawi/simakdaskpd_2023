@@ -1129,7 +1129,7 @@ class lpj extends CI_Controller
     {
         $kd_skpd  = $this->session->userdata('kdskpd');
         $lpj = $this->input->post('lpj');
-        $sql = "SELECT (select d.tgl_bukti from trhtransout d left join trdtransout c on c.no_bukti=d.no_bukti and c.kd_skpd=d.kd_skpd where c.no_bukti=a.no_bukti and c.kd_skpd=a.kd_bp_skpd and c.kd_sub_kegiatan=a.kd_sub_kegiatan and c.kd_rek6=a.kd_rek6) as tgl_bukti,
+        $sql = "SELECT (select top 1 d.tgl_bukti from trhtransout d left join trdtransout c on c.no_bukti=d.no_bukti and c.kd_skpd=d.kd_skpd where c.no_bukti=a.no_bukti and c.kd_skpd=a.kd_bp_skpd and c.kd_sub_kegiatan=a.kd_sub_kegiatan and c.kd_rek6=a.kd_rek6) as tgl_bukti,
          a.kd_skpd, a.no_lpj,a.no_bukti,a.kd_sub_kegiatan,a.kd_rek6,a.nm_rek6,a.nilai,kd_bp_skpd FROM trlpj a INNER JOIN trhlpj b ON a.no_lpj=b.no_lpj AND a.kd_skpd=b.kd_skpd
 				WHERE a.no_lpj='$lpj' AND a.kd_skpd='$kd_skpd' order by tgl_bukti";
 
