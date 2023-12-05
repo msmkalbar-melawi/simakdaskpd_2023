@@ -7739,7 +7739,7 @@ class Spp extends CI_Controller
         $kdskpd  = $this->session->userdata('kdskpd');
         $nolpj = $this->input->post('nolpj');
 
-        $sql = "SELECT a.kd_sub_kegiatan,a.kd_rek6, a.nm_rek6, a.nilai ,a.no_bukti,a.no_lpj, b.kd_skpd,(select sumber from trdtransout where no_bukti=a.no_bukti and kd_skpd=a.kd_skpd)as sumber FROM trlpj a INNER JOIN trhlpj b 
+        $sql = "SELECT a.kd_sub_kegiatan,a.kd_rek6, a.nm_rek6, a.nilai ,a.no_bukti,a.no_lpj, b.kd_skpd,(select TOP 1 sumber from trdtransout where no_bukti=a.no_bukti and kd_skpd=a.kd_skpd)as sumber FROM trlpj a INNER JOIN trhlpj b 
                     ON a.no_lpj=b.no_lpj AND a.kd_skpd=b.kd_skpd
                 WHERE b.kd_skpd='$kdskpd' and a.no_lpj='$nolpj' ORDER BY a.no_bukti, a.kd_sub_kegiatan, a.kd_rek6";
 
