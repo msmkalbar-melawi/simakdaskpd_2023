@@ -100,17 +100,23 @@ class BKUController extends CI_Controller
              month(z.tgl_kas) < '$bulan' and year(z.tgl_kas) = $thn_ang AND z.kd_skpd = '$lcskpd'";
         }
         $tox = 0;
-        $tox_awal = "SELECT SUM(isnull(sld_awal_bank,0)+ isnull(sld_awal,0)) AS jumlah FROM ms_skpd_jkn where kd_skpd='$lcskpd'";
+        $tox_awal = "SELECT SUM(ISNULL(nilai,0)) AS jumlah FROM bok_saldo_awal where kd_skpd='$lcskpd'";
         $hasil = $this->db->query($tox_awal);
-        if (isset($bulan)) {
+        // $tox_awal = "SELECT SUM(isnull(sld_awal_bank,0)+ isnull(sld_awal,0)) AS jumlah FROM ms_skpd_jkn where kd_skpd='$lcskpd'";
+        // $hasil = $this->db->query($tox_awal);
+        // if (isset($bulan)) {
 
-            if ($bulan == '1') {
-                $tox = $hasil->row('jumlah');
-            }
-        }
+        //     if ($bulan == '1') {
+        //         $tox = $hasil->row('jumlah');
+        //     }
+        // }
 
+        $tox = $hasil->row('jumlah');
         $hasil = $this->db->query($csql3);
         $trh4 = $hasil->row();
+
+        // $hasil = $this->db->query($csql3);
+        // $trh4 = $hasil->row();
 
         $saldoawal = $trh4->sel;
         $aa = $trh4->sel;
