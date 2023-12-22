@@ -587,10 +587,10 @@
             }
 
             // Protek UP
-            if ((total < batas)) {
-                swal("Error", "LPJ Belum Mencapai 75%", "error");
-                return;
-            }
+            // if ((total < batas)) {
+            //     swal("Error", "LPJ Belum Mencapai 75%", "error");
+            //     return;
+            // }
             // END
 
             if (sisa_spd < total) {
