@@ -7689,7 +7689,7 @@ class Spp extends CI_Controller
         //         NOT IN(select ISNULL(no_lpj,'') FROM trhspp WHERE kd_skpd='$skpd' AND jns_spp = '2' and (sp2d_batal<>'1' or sp2d_batal is null))";
         
         $sql = "SELECT DISTINCT no_lpj,tgl_lpj FROM trhlpj WHERE jenis = '1' AND kd_skpd = '$skpd' and status='2' AND no_lpj 
-                NOT IN(select ISNULL(no_lpj,'') FROM trhspp WHERE kd_skpd='$skpd' AND jns_spp IN('2') and (sp2d_batal<>'1' or sp2d_batal is null))";
+                NOT IN(select ISNULL(no_lpj,'') FROM trhspp WHERE kd_skpd='$skpd' AND jns_spp IN('2','7') and (sp2d_batal<>'1' or sp2d_batal is null))";
         
 
         $query1 = $this->db->query($sql);
