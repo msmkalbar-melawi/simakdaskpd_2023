@@ -146,10 +146,10 @@
                {field:'kode',title:'Kode Bank',width:100},  
                {field:'nama',title:'Nama Bank',width:700}    
            ]],  
-           onSelect:function(rowIndex,rowData){
-               kode = rowData.kode;               
-               $("#nmbank").attr("value",rowData.nama.toUpperCase());
-           }  
+        //    onSelect:function(rowIndex,rowData){
+        //        kode = rowData.kode;               
+        //        $("#nmbank").attr("value",rowData.nama.toLowerCase());
+        //    }  
         });
 
     });        
@@ -285,7 +285,6 @@
             alert('Kode SKPD Tidak Boleh Kosong');
             exit();
         }
-        
         
         if (lcstatus=='tambah'){ 
                     
