@@ -474,7 +474,7 @@
         $('#sp2d').combogrid('setValue','');
 		$("#nmgiat").attr("value",'');
 		$("#jns_cp").attr("value",'');
-        $("#jns_tunai").attr("value",'BNK');
+        $("#jns_tunai").attr("value",'BNK','TNK');
     }
      function get_nourut()
         {
@@ -510,8 +510,8 @@
 		    var cjnsrek   = $('#jns_trans').combobox('getValue');
 			total = lcnl+tunai;
 			
-			if(cjnsrek==1 && tunai>total){
-				alert("Melebihi Kas Tunai");
+			if(tunai<lcnl){
+				alert("Melebihi Uang Kas");
 				exit();
 			}
             if (ckdrek != '' && lcnl != 0 ) {
@@ -589,11 +589,15 @@
     function tambah(){
         var lcno = document.getElementById('no_kas').value;
         var cjnstetap = document.getElementById('jns_tetap').checked;
+        // var cjenis_bayar = document.getElementById('jns_tunai').value; 
+        var jns_pembayaran = document.getElementById('jns_tunai').value;
+        // alert(jns_pembayaran);
+        // return;
          var giat  = '1';
         if(cjnstetap==true){
             $("#dialog-modal_t").dialog('open');
         } else {
-            if(lcno !=''){
+            if(lcno !='' && jns_pembayaran=='TNK'){
 			load_sisa_tunai();
             $("#dialog-modal").dialog('open');
             $('#nilai').attr('value',0);
@@ -602,10 +606,25 @@
             var giat = $('#giat').combogrid('getValue');
 			   var no_sp2d =($('#sp2d').combogrid('getValue')).split("/").join("123456789");
             } else {
-                alert('Nomor Sts Tidak Boleh kosong')
+                if(lcno ==''){
+                    alert('Nomor Sts Tidak Boleh kosong')
                 document.getElementById('no_kas').focus();
                 exit();
-            }
+                } 
+                if(lcno !='' && jns_pembayaran=='BNK'){
+                    load_sisa_bank();
+            $("#dialog-modal").dialog('open');
+            $('#nilai').attr('value',0);
+            $('#nmrek').attr('value','');
+            var kode = document.getElementById('skpd').value;
+            var giat = $('#giat').combogrid('getValue');
+			   var no_sp2d =($('#sp2d').combogrid('getValue')).split("/").join("123456789");
+                }else{
+                    alert('Nomor Sts Tidak Boleh kosong')
+                document.getElementById('no_kas').focus();
+                exit();
+                }
+            } 
             
             if(giat !=''){
                rek_filter(); 
@@ -938,6 +957,26 @@
          $.ajax({
             type: 'POST',
             url:"<?php echo base_url(); ?>index.php/tukd_kas/load_sisa_tunai",
+            dataType:"json",
+            success:function(data){ 
+                $.each(data, function(i,n){
+                    $("#sisa_tunai").attr("value",n['sisa']);
+                   // $("#rekspm1").attr("value",n['rekspm1']);
+                });
+            }
+         });
+        });
+    }
+
+    // andika sisa bank
+    function load_sisa_bank(){           
+        $(function(){      
+         $.ajax({
+            type: 'POST',
+            url:"<?php echo base_url(); ?>index.php/tukd_kas/load_sisa_bank",
+            data:{
+                tgl :$('#tanggalkas').datebox('getValue'),
+            },
             dataType:"json",
             success:function(data){ 
                 $.each(data, function(i,n){

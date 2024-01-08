@@ -552,6 +552,73 @@ function cek_simpan(){
             $query1->free_result();	
 	}
 
+    // sisa bank
+    function load_sisa_bank(){
+        $lctgl2 = $this->input->post('tgl');
+        $lcskpd  = $this->session->userdata('kdskpd');  
+         $asql = $this->db->query("SELECT terima-keluar as sisa FROM(select
+      SUM(case when jns=1 then jumlah else 0 end) AS terima,
+      SUM(case when jns=2 then jumlah else 0 end) AS keluar
+      from (
+      SELECT tgl_kas AS tgl,no_kas AS bku,keterangan as ket,nilai AS jumlah,'1' AS jns,kd_skpd AS kode FROM tr_setorsimpanan union
+      SELECT '2022-01-01' AS tgl, null AS bku,
+	    'Saldo Awal' AS ket, sld_awal_bank AS jumlah, '1' as jns, kd_skpd AS kode FROM ms_skpd WHERE kd_skpd = '$lcskpd'
+                union
+      SELECT tgl_bukti AS tgl,no_bukti AS bku,ket as ket,nilai AS jumlah,'1' AS jns,kd_skpd AS kode FROM TRHINLAIN WHERE pay='BANK' union
+            select c.tgl_kas [tgl],c.no_kas [bku] ,c.keterangan [ket],c.nilai [jumlah],'1' [jns],c.kd_skpd [kode] from tr_jpanjar c join tr_panjar d on 
+            c.no_panjar_lalu=d.no_panjar and c.kd_skpd=d.kd_skpd where c.jns='2' and c.kd_skpd='$lcskpd' and  d.pay='BANK' union all
+             select a.tgl_bukti [tgl],a.no_bukti [bku],a.ket [ket],sum(b.nilai) [jumlah],'1' [jns],a.kd_skpd [kode] from trhtrmpot a 
+             join trdtrmpot b on a.no_bukti=b.no_bukti and a.kd_skpd=b.kd_skpd
+             where a.kd_skpd='$lcskpd' and a.pay='BANK' and jns_spp not in('1','2','3') group by a.tgl_bukti,a.no_bukti,a.ket,a.kd_skpd
+             union all
+            select a.tgl_sts as tgl,a.no_sts as bku, a.keterangan as ket, SUM(b.rupiah) as jumlah, '2' as jns, a.kd_skpd as kode 
+            from trhkasin_pkd a INNER JOIN trdkasin_pkd b ON a.no_sts=b.no_sts AND a.kd_skpd=b.kd_skpd  
+            where jns_trans IN ('5') and bank='BNK' and a.kd_skpd='$lcskpd' 
+            GROUP BY a.tgl_sts,a.no_sts, a.keterangan,a.kd_skpd  union all
+       SELECT tgl_bukti AS tgl,no_bukti AS bku,ket AS ket,total-isnull(pot,0)-isnull(f.pot2,0) AS jumlah,'2' AS jns,a.kd_skpd AS kode FROM trhtransout 
+       a join trhsp2d b on a.no_sp2d=b.no_sp2d left join (select no_spm, sum(nilai)pot 
+       from trspmpot group by no_spm) c on b.no_spm=c.no_spm 
+             left join
+       (
+        select d.no_kas,sum(e.nilai) [pot2],d.kd_skpd from trhtrmpot d join trdtrmpot e on d.no_bukti=e.no_bukti and d.kd_skpd=e.kd_skpd
+       
+        where e.kd_skpd='$lcskpd' and d.no_kas<>'' and d.pay='BANK' group by d.no_kas,d.kd_skpd
+       ) f on f.no_kas=a.no_bukti and f.kd_skpd=a.kd_skpd 
+              WHERE pay='BANK' and 
+             (panjar not in ('1') or panjar is null) 
+             union 
+             select a.tgl_bukti [tgl],a.no_bukti [bku],a.ket [ket],sum(b.nilai) [jumlah],'2' [jns],a.kd_skpd [kode] from trhstrpot a 
+             join trdstrpot b on a.no_bukti=b.no_bukti and a.kd_skpd=b.kd_skpd
+             where a.kd_skpd='$lcskpd' and a.pay='BANK' group by a.tgl_bukti,a.no_bukti,a.ket,a.kd_skpd
+      UNION
+            SELECT tgl_kas AS tgl,no_kas AS bku,keterangan AS ket,nilai AS jumlah,'2' AS jns,kd_skpd AS kode FROM tr_ambilsimpanan union
+      SELECT tgl_bukti AS tgl,no_bukti AS bku,ket as ket,nilai AS jumlah,'2' AS jns,kd_skpd AS kode FROM trhoutlain WHERE pay='BANK' union
+      SELECT tgl_kas AS tgl,no_kas AS bku,keterangan as ket,nilai AS jumlah,'2' AS jns,kd_skpd_sumber AS kode FROM tr_setorpelimpahan_bank union 
+
+            SELECT tgl_kas AS tgl,no_kas AS bku,keterangan AS ket,nilai AS jumlah,'2' AS jns,kd_skpd AS kode FROM tr_ambilsimpanan WHERE status_drop!='1' union 
+
+      SELECT a.tgl_kas AS tgl,a.no_panjar AS bku,a.keterangan as ket,a.nilai-isnull(b.pot2,0) AS jumlah,'2' AS jns,a.kd_skpd AS kode FROM tr_panjar a
+            left join 
+            (
+                select d.no_kas,sum(e.nilai) [pot2],d.kd_skpd from trhtrmpot d join trdtrmpot e on d.no_bukti=e.no_bukti and d.kd_skpd=e.kd_skpd 
+                where e.kd_skpd='$lcskpd' and d.no_kas<>'' and d.pay='BANK' group by d.no_kas,d.kd_skpd
+             ) b on a.no_panjar=b.no_kas and a.kd_skpd=b.kd_skpd 
+            where a.pay='BANK' and a.kd_skpd='$lcskpd'                  
+            union all
+            select a.tgl_sts as tgl,a.no_sts as bku, a.keterangan as ket, SUM(b.rupiah) as jumlah, '2' as jns, a.kd_skpd as kode 
+            from trhkasin_pkd a INNER JOIN trdkasin_pkd b ON a.no_sts=b.no_sts AND a.kd_skpd=b.kd_skpd  
+            where jns_trans NOT IN ('4','2','5') and pot_khusus =0  and bank='BNK' and a.kd_skpd='$lcskpd'
+            GROUP BY a.tgl_sts,a.no_sts, a.keterangan,a.kd_skpd union all           
+            select a.tgl_sts as tgl,a.no_sts as bku, a.keterangan as ket, SUM(b.rupiah) as jumlah, '1' as jns, a.kd_skpd as kode 
+            from trhkasin_pkd a INNER JOIN trdkasin_pkd b ON a.no_sts=b.no_sts AND a.kd_skpd=b.kd_skpd  
+            where jns_trans IN ('5') and bank='BNK' and a.kd_skpd='$lcskpd' 
+            GROUP BY a.tgl_sts,a.no_sts, a.keterangan,a.kd_skpd  
+            ) a
+            where tgl<='$lctgl2' and kode='$lcskpd') a 
+            ");  
+            echo json_encode($asql->result()); 
+    }
+
     function hapus_sts(){
         $nomor = $this->input->post('no');
 	    $kd_skpd = $this->session->userdata('kdskpd');
