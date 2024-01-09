@@ -262,6 +262,8 @@ $route['transaksibok'] = "bok/TransaksiController/index";
 $route['setorpotonganbok'] = "bok/SetorPotonganController/index";
 $route['sp3bbok'] = "bok/SP3BController/index";
 
+// BLUD
+$route['sp3bblud'] = "blud/SP3BBludController/index";
 
 // RINCIAN KARTU KENDALI
 $route['bukurincian']="bukurincian/BukuRincianController/index";
