@@ -183,7 +183,7 @@
                         <table style="width:100%;" border="0">
                             <td width="20%">Nomor SP3B</td>
                             <td width="1%">:</td>
-                            <td><input type="text" id="no_sp3b" style="width: 20px;" maxlength="30" /> 900/01/RSUD-BLUD/KEU/XII/2023
+                            <td><input type="text" id="no_sp3b" style="width: 200px;" maxlength="30" /> Contoh : 900/01/RSUD-BLUD/KEU/XII/2023
                             </td> 
                         </table>
                 </div>
