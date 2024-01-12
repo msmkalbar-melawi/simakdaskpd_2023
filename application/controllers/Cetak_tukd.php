@@ -1033,7 +1033,7 @@ SELECT TGL_BUKTI AS tgl,NO_BUKTI AS bku,KET as ket, nilai AS jumlah,'1' AS jns_b
 
         SELECT tgl_kas AS tgl,no_kas AS bku,keterangan as ket,nilai AS jumlah,'1' AS jns,kd_skpd AS kode FROM tr_setorsimpanan union
         SELECT '2022-01-01' AS tgl, null AS bku,
-'Saldo Awal' AS ket, sld_awal_bank AS jumlah, '1' as jns, kd_skpd AS kode FROM ms_skpd WHERE kd_skpd = '1.02.0.00.0.00.01.0000'
+'Saldo Awal' AS ket, sld_awal_bank AS jumlah, '1' as jns, kd_skpd AS kode FROM ms_skpd WHERE kd_skpd = '$lcskpd'
 union 
 --                 SELECT tgl_bukti AS tgl,no_bukti AS bku,ket as ket,nilai AS jumlah,'1' AS jns,kd_skpd AS kode FROM trhINlain WHERE pay='BANK' union
 SELECT TGL_BUKTI AS tgl,NO_BUKTI AS bku,KET as ket, nilai AS jumlah,'1' AS jns_beban, kd_skpd AS kode FROM TRHINLAIN WHERE KD_SKPD='$lcskpd'
