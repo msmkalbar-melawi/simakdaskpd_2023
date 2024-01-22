@@ -323,34 +323,34 @@
         }
       });
 
-      $('#cmb_sts').combogrid({
-        panelWidth: 700,
-        idField: 'no_sts',
-        textField: 'no_sts',
-        mode: 'remote',
-        url: '<?php echo base_url(); ?>index.php/Penyetoran/load_sts',
-        columns: [
-          [{
-              field: 'no_sts',
-              title: 'Nomor STS',
-              width: 100
-            },
-            {
-              field: 'nm_skpd',
-              title: 'Nama SKPD',
-              width: 700
-            }
-          ]
-        ],
-        onSelect: function(rowIndex, rowData) {
-          nomor = rowData.no_sts;
-        }
-      });
+      // $('#cmb_sts').combogrid({
+      //   panelWidth: 700,
+      //   idField: 'no_sts',
+      //   textField: 'no_sts',
+      //   mode: 'remote',
+      //   url: '<?php echo base_url(); ?>index.php/Penyetoran/load_sts',
+      //   columns: [
+      //     [{
+      //         field: 'no_sts',
+      //         title: 'Nomor STS',
+      //         width: 100
+      //       },
+      //       {
+      //         field: 'kd_skpd',
+      //         title: 'Nama SKPD',
+      //         width: 700
+      //       }
+      //     ]
+      //   ],
+      //   onSelect: function(rowIndex, rowData) {
+      //     nomor = rowData.no_sts;
+      //   }
+      // });
 
+    
       //combo box no_terima
       $('#noterima').combogrid({
-
-
+        
         url: '<?php echo base_url(); ?>index.php/Penyetoran/list_no_terima/2021-01-01',
         panelWidth: 800,
         idField: 'no_terima',
@@ -383,8 +383,7 @@
           ]
         ],
         onSelect: function(rowIndex, rowData) {
-
-
+          
         }
       });
 
@@ -705,6 +704,7 @@
     function get(nomor, tgl, kode, lckdbank, lckdgiat, lcket, lcjnskeg, lcrekbank, lctotal, jenis_status, lno_terima, spj, lno_cek, status) {
 
       $("#nomor").attr("value", nomor);
+      $("#cmb_sts").attr("value", nomor);
       $("#cek").attr("value", lno_cek);
       $("#nomor_hide").attr("value", nomor);
       $("#tanggal").datebox("setValue", tgl);
@@ -1518,7 +1518,7 @@
             <td width='20%'>No Terima</td>
             <td width="80%">&nbsp;<input id="noterima" name="noterima" style="width:200px" /></td>
             <td width='20%'>Rekening Bank</td>
-            <td width="80%">&nbsp;<input id="rek_bank" name="rek_bank" value='4501002886' readonly style="width:100px" /></td>
+            <td width="80%">&nbsp;<input id="rek_bank" name="rek_bank" value="4501002886" readonly style="width:100px" /></td>
           </tr>
           <tr>
             <td colspan="4" align="right">
@@ -1605,7 +1605,7 @@
       <table>
         <tr>
           <td width="110px">No STS:</td>
-          <td><input id="cmb_sts" name="cmb_sts" style="width: 200px;" /></td>
+          <td><input id="cmb_sts" name="cmb_sts" style="width: 200px;background-color:#d1d1d1;" readonly/></td>
         </tr>
       </table>
     </fieldset>
