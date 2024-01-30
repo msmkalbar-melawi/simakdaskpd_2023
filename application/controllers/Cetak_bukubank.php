@@ -1068,7 +1068,7 @@ GROUP BY a.tgl_kas,a.no_kas, a.keterangan,a.kd_skpd_sumber
             from trhkasin_pkd a INNER JOIN trdkasin_pkd b ON a.no_sts=b.no_sts AND a.kd_skpd=b.kd_skpd  
             where jns_trans IN ('5') and bank='BNK' and a.kd_skpd='$kd_skpd' 
             GROUP BY a.tgl_sts,a.no_sts, a.keterangan,a.kd_skpd  union all
-             SELECT tgl_bukti AS tgl,no_bukti AS bku,ket AS ket,total AS jumlah,'2' AS jns,a.kd_skpd AS kode FROM trhtransout 
+             SELECT tgl_bukti AS tgl,no_bukti AS bku,ket AS ket,total-isnull(pot,0)-isnull(f.pot2,0) AS jumlah, '2' AS jns,a.kd_skpd AS kode FROM trhtransout 
        a join trhsp2d b on a.no_sp2d=b.no_sp2d left join (select no_spm, sum(nilai)pot 
        from trspmpot group by no_spm) c on b.no_spm=c.no_spm 
              left join
