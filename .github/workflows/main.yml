@@ -1,0 +1,37 @@
+name: 🚀 Deploy backend on push branch main
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code on branch main
+        uses: actions/checkout@v1
+
+      - name: 🐧 Deploy to linux server
+        uses: appleboy/ssh-action@v1.0.3
+
+        with:
+          host: ${{ secrets.HOSTNAME }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.SSHKEY }}
+          passphrase: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/app5/simakdaskpd_2023 && git pull origin main
+
+      - name: 🪟 Deploy to windows server
+        uses:  appleboy/ssh-action@v1.0.3
+
+        with:
+          host: ${{ secrets.HOSTNAME_WINDOWS }}
+          username: ${{ secrets.USERNAME_WINDOWS }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.SSHKEY_WINDOWS }}
+          passphrase: ${{ secrets.PASSWORD_WINDOWS }}
+          script: |
+            cd C:\aplikasi\app5\action && simakdaskpd_2023.bat
