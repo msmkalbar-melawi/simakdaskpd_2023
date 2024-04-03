@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           passphrase: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/deploy && simakdaskpd_2023.sh
+            cd /var/deploy && ./simakdaskpd_2023.sh
 
       - name: 🪟 Deploy to windows server
         uses:  appleboy/ssh-action@v1.0.3
