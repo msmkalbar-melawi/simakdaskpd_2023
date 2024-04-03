@@ -22,7 +22,10 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           passphrase: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/deploy && ./simakdaskpd_2023.sh
+            eval `ssh-agent -s`
+            ssh-add ~/.ssh/id_ed25519
+            cd ${{ secrets.LINUX_PATH}} 
+            git pull origin main
 
       - name: 🪟 Deploy to windows server
         uses:  appleboy/ssh-action@v1.0.3
