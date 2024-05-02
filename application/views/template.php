@@ -409,9 +409,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
   </style>
   <!-- set javascript base_url -->
   <script type="text/javascript">
-    <![CDATA[
-    var base_url = '<?php echo base_url(); ?>';
-    ]]>
+      var base_url = '<?php echo base_url(); ?>';
   </script>
 
   <script type="text/javascript" src="<?php echo base_url(); ?>assets/jquery.js"></script>

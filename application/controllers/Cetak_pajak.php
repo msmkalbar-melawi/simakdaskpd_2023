@@ -65,14 +65,19 @@ class cetak_pajak extends CI_Controller
 		$mas->free_result();
 	}
 
-	function cetak_pajak1($lcskpd = '', $nbulan = '', $ctk = '', $ttd1 = '', $tgl_ctk = '', $ttd2 = '', $jns = '')
+	function cetak_pajak1()
 	{
-		$spasi = $this->uri->segment(10);
-		$ttd1 = str_replace('123456789', ' ', $ttd1);
-		$ttd2 = str_replace('123456789', ' ', $ttd2);
+		$lcskpd = $this->input->get('skpd');
+		$spasi = $this->input->get('spasi');
+		$ttd1 = str_replace('123456789', ' ', $this->input->get('ttd'));
+		$ttd2 = str_replace('123456789', ' ', $this->input->get('penggunaAnggaran'));
 		$skpd = $this->tukd_model->get_nama($lcskpd, 'nm_skpd', 'ms_skpd', 'kd_skpd');
 		$sqlsc = "SELECT tgl_rka,provinsi,kab_kota,daerah,thn_ang FROM sclient WHERE kd_skpd='$lcskpd'";
 		$sqlsclient = $this->db->query($sqlsc);
+		$ctk = $this->input->get('cetak');
+		$jns = $this->input->get('jenis');
+		$nbulan = $this->input->get('bulan');
+		$tgl_ctk = $this->input->get('tanggalCetak');
 		foreach ($sqlsclient->result() as $rowsc) {
 			$kab     = $rowsc->kab_kota;
 			$prov     = $rowsc->provinsi;

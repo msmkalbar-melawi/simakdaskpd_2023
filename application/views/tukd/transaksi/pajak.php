@@ -16,78 +16,107 @@
     var nip='';
 	var kdskpd='';
 	var kdrek5='';
-    
-     $(document).ready(function() {
-            $("#accordion").accordion();            
-            $( "#dialog-modal" ).dialog({
-                height: 400,
-                width: 800            
-            });
-             get_skpd();
+	$(document).ready(function() {
+		const rangeData  = $('#rangeData');
+		const rangeDataTarget = $('#rangeDataTarget')
+		const rangeDataTargetLabel = $('#rangDataTargetLabel')
+		const bulan = $('#bulan')
+		const tanggal = $('#tanggal')
+		$("#accordion").accordion();            
+		$( "#dialog-modal" ).dialog({
+			height: 400,
+			width: 800            
+		});
+		get_skpd();
 		$("#div1").hide();
-		$("#div2").hide(); 			 
-		$("#div3").hide(); 			 
-        });   
+		$("#div2").hide();
+		$("#div3").hide();
+
+		rangeData.change((event) => {
+			const { currentTarget: { value } } = event
+			if(value === '') {
+				rangeDataTarget.hide()
+
+			} else {
+				rangeDataTarget.show()
+				if(value === 'bulan') {
+					rangeDataTargetLabel.text(`Pilih Bulan`)
+					tanggal.hide()
+					bulan.show()
+				} else {
+					bulan.hide()
+					rangeDataTargetLabel.text(`Pilih Tanggal`)
+					tanggal.show()
+				}
+			}
+		});
+    });
+
     
 	$(function(){  
-            $('#ttd1').combogrid({  
-                panelWidth:600,  
-                idField:'nip',  
-                textField:'nip',  
-                mode:'remote',
-                url:'<?php echo base_url(); ?>index.php/cetak_pajak/load_ttd/BK',  
-                columns:[[  
-                    {field:'nip',title:'NIP',width:200},
-                    {field:'nama',title:'Nama',width:400}
-                ]],  
-           onSelect:function(rowIndex,rowData){
-               $("#nm_ttd1").attr("value",rowData.nama);
-           } 
-            });
+		$('#ttd1').combogrid({  
+			panelWidth:600,  
+			idField:'nip',  
+			textField:'nip',  
+			mode:'remote',
+			url:'<?php echo base_url(); ?>index.php/cetak_pajak/load_ttd/BK',  
+			columns:[[  
+				{field:'nip',title:'NIP',width:200},
+				{field:'nama',title:'Nama',width:400}
+			]],  
+			onSelect:function(rowIndex,rowData){
+				$("#nm_ttd1").attr("value",rowData.nama);
+			} 
+		});
 
 		$('#tgl_ttd').datebox({  
-            required:true,
-            formatter :function(date){
-            	var y = date.getFullYear();
-            	var m = date.getMonth()+1;
-            	var d = date.getDate();
-            	return y+'-'+m+'-'+d;
-            }
-        }); 
-			
-         
-            $('#ttd2').combogrid({  
-                panelWidth:600,  
-                idField:'nip',  
-                textField:'nip',  
-                mode:'remote',
-                url:'<?php echo base_url(); ?>index.php/cetak_pajak/load_ttd/PA',  
-                columns:[[  
-                    {field:'nip',title:'NIP',width:200},
-                    {field:'nama',title:'Nama',width:400}
-                ]],  
-           onSelect:function(rowIndex,rowData){
-               $("#nm_ttd2").attr("value",rowData.nama);
-           } 
-            }); 
+			required:true,
+			formatter :function(date){
+				var y = date.getFullYear();
+				var m = date.getMonth()+1;
+				var d = date.getDate();
+				return y+'-'+m+'-'+d;
+			}
+		}); 
+		$('#ttd2').combogrid({  
+			panelWidth:600,  
+			idField:'nip',  
+			textField:'nip',  
+			mode:'remote',
+			url:'<?php echo base_url(); ?>index.php/cetak_pajak/load_ttd/PA',  
+			columns:[[  
+				{field:'nip',title:'NIP',width:200},
+				{field:'nama',title:'Nama',width:400}
+			]],  
+			onSelect:function(rowIndex,rowData){
+				$("#nm_ttd2").attr("value",rowData.nama);
+			} 
+		}); 
 
 		$('#pasal').combogrid({  
-                panelWidth:550,  
-                idField:'kd_rek6',  
-                textField:'kd_rek6',  
-                mode:'remote',
-                url:'<?php echo base_url(); ?>index.php/cetak_pajak/load_pasal_pajak',  
-                columns:[[  
-                    {field:'kd_rek6',title:'Kode',width:150},
-                    {field:'nm_rek6',title:'Rekening',width:350}
-                ]],  
-           onSelect:function(rowIndex,rowData){
-               $("#nm_pasal").attr("value",rowData.nm_rek6);
-           } 
-            }); 
-
-			
-         });
+				panelWidth:550,  
+				idField:'kd_rek6',  
+				textField:'kd_rek6',  
+				mode:'remote',
+				url:'<?php echo base_url(); ?>index.php/cetak_pajak/load_pasal_pajak',  
+				columns:[[  
+					{field:'kd_rek6',title:'Kode',width:150},
+					{field:'nm_rek6',title:'Rekening',width:350}
+				]],  
+			onSelect:function(rowIndex,rowData){
+				$("#nm_pasal").attr("value",rowData.nm_rek6);
+			} 
+		}); 
+		$('#tanggalInput').datebox({
+			required:true,
+			formatter :function(date){
+				var y = date.getFullYear();
+				var m = date.getMonth()+1;
+				var d = date.getDate();
+				return y+'-'+m+'-'+d;
+			}
+		});
+    });
 	
     function validate1(){
         var bln1 = document.getElementById('bulan1').value;
@@ -134,36 +163,47 @@
 						$("#div3").hide();
 						}         	
         }
-		
+
 		
 		function cetak(ctk)
         {
 			var spasi  = document.getElementById('spasi').value; 
 			var skpd   = kdskpd; 
-			var bulan   =  document.getElementById('bulan1').value;
+			var bulan   =  $('#bulan1').val();
 			var ctglttd = $('#tgl_ttd').datebox('getValue');
 			var ttd1   = $("#ttd1").combogrid('getValue');
 			var ttd2   = $("#ttd2").combogrid('getValue'); 
 			var jns   = document.getElementById('jenis').value;
 			var rinci   = document.getElementById('rinci').value;
 			var rinci1   = document.getElementById('rinci1').value;
-			var pasal   = $("#pasal").combogrid('getValue'); 
+			var pasal   = $("#pasal").combogrid('getValue');
+			const rangeData = $('#rangeData').val()
+			const tanggalInput = $('#tanggalInput').datebox('getValue');
 			if(ctglttd==''){
-				alert('Tanggal tidak boleh kosong!');
-				exit();
+				return alert('Tanggal penandatanganan tidak boleh kosong!');
 			}
-			if(bulan==''){
-				alert('Bulan tidak boleh kosong!');
-				exit();
-			}
+
+
 			if(ttd1==''){
-				alert('Bendahara Pengeluaran tidak boleh kosong!');
-				exit();
+				return alert('Bendahara Pengeluaran tidak boleh kosong!');
 			}
+
 			if(ttd2==''){
-				alert('Pengguna Anggaran tidak boleh kosong!');
-				exit();
+				return alert('Pengguna Anggaran tidak boleh kosong!');
 			}
+
+			if(rangeData === '') {
+				return alert('Silahkan pilih data per bulan/per tanggal')
+			}
+
+			if(rangeData === 'bulan' && bulan === '') {
+				return alert('Silahkan pilih bulan terlebih dahulu')
+			}
+
+			if(rangeData === 'tanggal' && tanggalInput === '') {
+				return alert('Silahkan pilih tanggal terlebih dahulu')
+			}
+	
 			var ttd_1 =ttd1.split(" ").join("123456789");
 			var ttd_2 =ttd2.split(" ").join("123456789");
 			var url    = "<?php echo site_url(); ?>cetak_pajak/cetak_pajak1";  
@@ -172,8 +212,16 @@
 			var url4    = "<?php echo site_url(); ?>cetak_pajak/cetak_pajak4";  
 			var url5    = "<?php echo site_url(); ?>cetak_pajak/cetak_pajak5";  
 			if(((jns==1)||(jns==4)) && (rinci==0) || (rinci==1)){
-			window.open(url2+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+spasi, '_blank');
-			window.focus();
+				let fullUrl = `${url}?skpd=${skpd}&cetak=${ctk}&tanggalCetak=${ctglttd}&ttd=${ttd_1}&penggunaAnggaran=${ttd_2}&jenis=${jns}&rinci=${rinci}&spasi=${spasi}&rangeData=${rangeData}`;
+
+				if(rangeData === 'bulan') {
+					fullUrl += `&bulan=${bulan}`
+				} else {
+					fullUrl += `&tanggal=${tanggalInput}`
+				}
+
+				window.open(fullUrl, '_blank');
+				window.focus();
 			}
 			else if(((jns==2)||(jns==3)) && (rinci1==4)){
 			window.open(url3+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+spasi, '_blank');
@@ -220,8 +268,27 @@
 			<td width="80%"><input id="sskpd" name="sskpd" style="width: 150px;" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="nmskpd" name="nmskpd" style="width: 500px; border:0;" /></td>
 		</tr>
         <tr >
-			<td width="20%" height="40" ><B>BULAN</B></td>
-			<td><?php echo $this->rka_model->combo_bulan('bulan1'); ?> </td>
+			<td width="20%" height="40" ><B>Berdasrkan</B></td>
+			<td>
+				<select name="rangeData" id="rangeData">
+					<option value="">-- Pilih Salah Satu ---</option>
+					<option value="bulan">Bulan</option>
+					<option value="tanggal">Tanggal</option>
+				</select>
+			</td>
+		</tr>
+        <tr id="rangeDataTarget" style="display: none;" >
+			<td width="20%" height="40" >
+				<strong id="rangDataTargetLabel" >Bulan</strong>
+			</td>
+			<td>
+				<div id="tanggal">
+					<input id="tanggalInput" name="tanggalInput" style="width: 150px;" />
+				</div>
+				<div id="bulan">
+					<?php echo $this->rka_model->combo_bulan('bulan1'); ?> 
+				</div>
+			</td>
 		</tr>
 		
 		<tr >
