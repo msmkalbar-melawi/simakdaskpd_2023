@@ -224,19 +224,26 @@
 				window.focus();
 			}
 			else if(((jns==2)||(jns==3)) && (rinci1==4)){
-			window.open(url3+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+spasi, '_blank');
-			window.focus();
+				window.open(url3+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+spasi, '_blank');
+				window.focus();
 			}
 			else if(((jns==0)||(jns==2)||(jns==3)) && (rinci1==5)){
-			window.open(url4+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+spasi, '_blank');
-			window.focus();
+				window.open(url4+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+spasi, '_blank');
+				window.focus();
 			}
 			else if(((jns==0)||(jns==2)||(jns==3)) && (rinci1==6)){
-			window.open(url5+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+pasal+'/'+spasi, '_blank');
-			window.focus();
+				window.open(url5+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+rinci+'/'+pasal+'/'+spasi, '_blank');
+				window.focus();
 			} else{
-			window.open(url+'/'+skpd+'/'+bulan+'/'+ctk+'/'+ttd_1+'/'+ctglttd+'/'+ttd_2+'/'+jns+'/'+spasi, '_blank');
-			window.focus();
+				let fullUrl = `${url}?skpd=${skpd}&cetak=${ctk}&tanggalCetak=${ctglttd}&ttd=${ttd_1}&penggunaAnggaran=${ttd_2}&jenis=${jns}&rinci=${rinci}&spasi=${spasi}&rangeData=${rangeData}`;
+
+				if(rangeData === 'bulan') {
+					fullUrl += `&bulan=${bulan}`
+				} else {
+					fullUrl += `&tanggal=${tanggalInput}`
+				}
+				window.open(fullUrl, '_blank');
+				window.focus();
 			}
         }
         
