@@ -197,7 +197,7 @@ $route['setor_simpanan'] = "tukd/setor_simpanan";
 //cetak tukd
 $route['bku']               = "Cetak_tukd/bku";
 $route['dth']                 = "tukd/dth";
-$route['spj']               = "Cetak_spj/index";
+$route['spj']               = "cetak_spj/index";
 $route['buku_simpanan_bank']       = "Cetak_bukubank/index";
 $route['buku_tunai']           = "Cetak_buku_tunai/index";
 $route['buku_pajak']           = "Cetak_pajak/index";
